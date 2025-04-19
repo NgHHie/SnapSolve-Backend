@@ -1,5 +1,6 @@
 package com.example.snapsolve.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,5 +18,6 @@ public class Topic {
     
     // Mối quan hệ nhiều-nhiều với Post
     @ManyToMany(mappedBy = "topics")
+    @JsonIgnore
     private List<Post> posts;
 }

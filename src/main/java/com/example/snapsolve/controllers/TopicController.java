@@ -5,10 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.snapsolve.dto.TopicDTO;
 import com.example.snapsolve.models.Topic;
 import com.example.snapsolve.services.TopicService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/topic")
@@ -23,16 +25,32 @@ public class TopicController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Topic>> getAllTopics() {
+    public ResponseEntity<List<TopicDTO>> getAllTopics() {
         List<Topic> topics = topicService.getAllTopics();
-        return new ResponseEntity<>(topics, HttpStatus.OK);
+        
+        // Chuyển đổi sang DTO để tránh vấn đề JSON đệ quy
+        List<TopicDTO> topicDTOs = topics.stream()
+            .map(topic -> new TopicDTO(
+                topic.getId(), 
+                topic.getName(), 
+                topic.getDescription(),
+                topic.getPosts() != null ? topic.getPosts().size() : 0))
+            .collect(Collectors.toList());
+            
+        return new ResponseEntity<>(topicDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Topic> getTopicById(@PathVariable Long id) {
+    public ResponseEntity<TopicDTO> getTopicById(@PathVariable Long id) {
         Topic topic = topicService.getTopicById(id);
         if (topic != null) {
-            return new ResponseEntity<>(topic, HttpStatus.OK);
+            TopicDTO topicDTO = new TopicDTO(
+                topic.getId(),
+                topic.getName(),
+                topic.getDescription(),
+                topic.getPosts() != null ? topic.getPosts().size() : 0
+            );
+            return new ResponseEntity<>(topicDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
