@@ -27,4 +27,12 @@ public class Post {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comment;
+
+    @ManyToMany
+    @JoinTable(
+        name = "post_topic",
+        joinColumns = @JoinColumn(name = "post_id"),
+        inverseJoinColumns = @JoinColumn(name = "topic_id")
+    )
+    private List<Topic> topics;
 }
