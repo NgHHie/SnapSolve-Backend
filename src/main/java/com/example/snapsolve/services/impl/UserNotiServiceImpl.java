@@ -1,10 +1,10 @@
-package com.example.snapsolve.services.impl;
+// package com.example.snapsolve.services.impl;
 
-import org.springframework.stereotype.Service;
+// import org.springframework.stereotype.Service;
 
-import com.example.snapsolve.services.UserService;
+// import com.example.snapsolve.services.UserService;
 
-@Service
-public class UserNotiServiceImpl implements UserService{
+// @Service
+// public class UserNotiServiceImpl implements UserService{
 
-}
+// }

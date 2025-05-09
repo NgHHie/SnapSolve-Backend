@@ -19,6 +19,9 @@ public class User {
     private String email;
     private String userRank;
     private LocalDate dob;
+    private String firstName;
+    private String lastName;
+    private String avatarUrl;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Search> searchList;
