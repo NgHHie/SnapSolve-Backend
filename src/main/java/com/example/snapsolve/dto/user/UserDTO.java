@@ -10,7 +10,7 @@ public class UserDTO {
     private String username;
     private String statusMessage;
     private String studentInformation;
-    private String SUID;
+    private String suid;
     private String phoneNumber;
     private String email;
     private String userRank;

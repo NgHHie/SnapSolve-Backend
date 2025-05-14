@@ -61,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
 
         userDTO.setStatusMessage(user.getStatusMessage());
         userDTO.setStudentInformation(user.getStudentInformation());
-        userDTO.setSUID(user.getSUID());
+        userDTO.setSuid(user.getSuid());
         return userDTO;
     }
 }

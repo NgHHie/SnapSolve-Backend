@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         userDTO.setUserRank(user.getUserRank());
         userDTO.setStatusMessage(user.getStatusMessage());
         userDTO.setStudentInformation(user.getStudentInformation());
-        userDTO.setSUID(user.getSUID());
+        userDTO.setSuid(user.getSuid());
         userDTO.setAvatarUrl(user.getAvatarUrl());
        
         
@@ -93,10 +93,10 @@ public class UserServiceImpl implements UserService {
         if (userCreateDTO.getUserRank() == null) {
                 user.setUserRank("normal");
         }
-        if(userCreateDTO.getSUID() == null)
+        if(userCreateDTO.getSuid() == null)
         {
             String SUID = UUID.randomUUID().toString();
-            user.setSUID(SUID);
+            user.setSuid(SUID);
         }
         
         user.setUsername(userCreateDTO.getUsername());

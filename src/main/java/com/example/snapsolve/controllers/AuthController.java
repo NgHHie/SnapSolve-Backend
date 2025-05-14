@@ -42,6 +42,7 @@ public class AuthController {
          
             
             UserDTO createdUser = userService.createUser(userCreateDTO);
+            System.out.println("User created: " + createdUser);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
         } catch (IllegalArgumentException e) {
             Map<String, String> errorResponse = new HashMap<>();
