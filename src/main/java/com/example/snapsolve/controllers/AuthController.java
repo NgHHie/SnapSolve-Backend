@@ -39,10 +39,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserDTO userCreateDTO) {
         try {
-            // Set default userRank
-            if (userCreateDTO.getUserRank() == null) {
-                userCreateDTO.setUserRank("normal");
-            }
+         
             
             UserDTO createdUser = userService.createUser(userCreateDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);

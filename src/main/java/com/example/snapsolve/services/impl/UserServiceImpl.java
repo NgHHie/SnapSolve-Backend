@@ -15,6 +15,7 @@ import com.example.snapsolve.services.UserService;
 
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +34,11 @@ public class UserServiceImpl implements UserService {
         userDTO.setUsername(user.getUsername());
         userDTO.setEmail(user.getEmail());
         userDTO.setPhoneNumber(user.getPhoneNumber());
+        userDTO.setUserRank(user.getUserRank());
+        userDTO.setStatusMessage(user.getStatusMessage());
+        userDTO.setStudentInformation(user.getStudentInformation());
+        userDTO.setSUID(user.getSUID());
+        userDTO.setAvatarUrl(user.getAvatarUrl());
        
         
         return userDTO;
@@ -83,13 +89,27 @@ public class UserServiceImpl implements UserService {
         }
         
         User user = new User();
+           
+        if (userCreateDTO.getUserRank() == null) {
+                user.setUserRank("normal");
+        }
+        if(userCreateDTO.getSUID() == null)
+        {
+            String SUID = UUID.randomUUID().toString();
+            user.setSUID(SUID);
+        }
+        
         user.setUsername(userCreateDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
         user.setEmail(userCreateDTO.getEmail());
         user.setPhoneNumber(userCreateDTO.getPhoneNumber());
-        user.setUserRank(userCreateDTO.getUserRank());
         
+        user.setStatusMessage(userCreateDTO.getStatusMessage());
+        user.setStudentInformation(userCreateDTO.getStudentInformation());
         
+        user.setAvatarUrl(userCreateDTO.getAvatarUrl());
+        
+     
         User savedUser = userRepository.save(user);
         return convertToDTO(savedUser);
     }
