@@ -5,9 +5,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.snapsolve.dto.user.PasswordChangeDTO;
-import com.example.snapsolve.dto.user.UserCreateDTO;
+
 import com.example.snapsolve.dto.user.UserDTO;
-import com.example.snapsolve.dto.user.UserUpdateDTO;
+
 import com.example.snapsolve.exception.ResourceNotFoundException;
 import com.example.snapsolve.models.User;
 import com.example.snapsolve.repositories.UserRepository;
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         userDTO.setEmail(user.getEmail());
         userDTO.setPhoneNumber(user.getPhoneNumber());
        
-        userDTO.setDob(user.getDob());
+        
         return userDTO;
     }
     
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public UserDTO createUser(UserCreateDTO userCreateDTO) {
+    public UserDTO createUser(UserDTO userCreateDTO) {
         // Kiểm tra username, email và số điện thoại đã tồn tại chưa
         if (userRepository.existsByUsername(userCreateDTO.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
@@ -88,14 +88,14 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userCreateDTO.getEmail());
         user.setPhoneNumber(userCreateDTO.getPhoneNumber());
         user.setUserRank(userCreateDTO.getUserRank());
-        user.setDob(userCreateDTO.getDob());
+        
         
         User savedUser = userRepository.save(user);
         return convertToDTO(savedUser);
     }
     
     @Override
-    public UserDTO updateUser(Long id, UserUpdateDTO userUpdateDTO) {
+    public UserDTO updateUser(Long id, UserDTO userUpdateDTO) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
         
@@ -135,9 +135,7 @@ public class UserServiceImpl implements UserService {
             user.setUserRank(userUpdateDTO.getUserRank());
         }
         
-        if (userUpdateDTO.getDob() != null) {
-            user.setDob(userUpdateDTO.getDob());
-        }
+    
         
         User updatedUser = userRepository.save(user);
         return convertToDTO(updatedUser);

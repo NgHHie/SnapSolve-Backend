@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.snapsolve.services.UserService;
 import com.example.snapsolve.dto.user.PasswordChangeDTO;
-import com.example.snapsolve.dto.user.UserCreateDTO;
+
 import com.example.snapsolve.dto.user.UserDTO;
-import com.example.snapsolve.dto.user.UserUpdateDTO;
+
 import com.example.snapsolve.exception.ResourceNotFoundException;
 
 import java.util.List;
@@ -66,7 +66,7 @@ public class UserController {
     
     // Tạo người dùng mới
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody UserCreateDTO userCreateDTO) {
+    public ResponseEntity<?> createUser(@RequestBody UserDTO userCreateDTO) {
         try {
             System.out.println("Creating user: " + userCreateDTO);
             UserDTO createdUser = userService.createUser(userCreateDTO);
@@ -80,7 +80,7 @@ public class UserController {
     
     // Cập nhật thông tin người dùng
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody UserUpdateDTO userUpdateDTO) {
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody UserDTO userUpdateDTO) {
         try {
             UserDTO updatedUser = userService.updateUser(id, userUpdateDTO);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);

@@ -8,11 +8,13 @@ import lombok.Data;
 public class UserDTO {
     private Long id;
     private String username;
-    private String email;
+    private String statusMessage;
+    private String studentInformation;
+    private String SUID;
     private String phoneNumber;
+    private String email;
+    private String userRank;
+    private String avatarUrl;
+    private String password;
 
-    private LocalDate dob;
-    private String firstName;
-    private String lastName;
-    // Không bao gồm password vì lý do bảo mật
 }
