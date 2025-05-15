@@ -2,10 +2,10 @@ package com.example.snapsolve.services;
 
 
 import com.example.snapsolve.dto.user.PasswordChangeDTO;
-import com.example.snapsolve.dto.user.UserCreateDTO;
+
 import com.example.snapsolve.dto.user.UserDTO;
-import com.example.snapsolve.dto.user.UserUpdateDTO;
-import com.example.snapsolve.models.User;
+
+
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ public interface UserService {
     UserDTO findUserByUsername(String username);
     UserDTO findUserByEmail(String email);
     
-    UserDTO createUser(UserCreateDTO userCreateDTO);
-    UserDTO updateUser(Long id, UserUpdateDTO userUpdateDTO);
+    UserDTO createUser(UserDTO userCreateDTO);
+    UserDTO updateUser(Long id, UserDTO userUpdateDTO);
     boolean changePassword(Long id, PasswordChangeDTO passwordChangeDTO);
     void deleteUser(Long id);
     

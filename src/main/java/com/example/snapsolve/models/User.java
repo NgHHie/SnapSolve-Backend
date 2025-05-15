@@ -15,15 +15,16 @@ public class User {
     private Long id;
 
     private String username;
-    private String password;
+    private String statusMessage;
+    private String studentInformation;
+    private String suid;
     private String phoneNumber;
     private String email;
     private String userRank;
-    private LocalDate dob;
-    private String firstName;
-    private String lastName;
     private String avatarUrl;
+    private String password;
 
+    
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private List<Search> searchList;

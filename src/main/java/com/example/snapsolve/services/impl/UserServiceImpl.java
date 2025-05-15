@@ -5,9 +5,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.snapsolve.dto.user.PasswordChangeDTO;
-import com.example.snapsolve.dto.user.UserCreateDTO;
+
 import com.example.snapsolve.dto.user.UserDTO;
-import com.example.snapsolve.dto.user.UserUpdateDTO;
+
 import com.example.snapsolve.exception.ResourceNotFoundException;
 import com.example.snapsolve.models.User;
 import com.example.snapsolve.repositories.UserRepository;
@@ -15,6 +15,7 @@ import com.example.snapsolve.services.UserService;
 
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,8 +34,13 @@ public class UserServiceImpl implements UserService {
         userDTO.setUsername(user.getUsername());
         userDTO.setEmail(user.getEmail());
         userDTO.setPhoneNumber(user.getPhoneNumber());
+        userDTO.setUserRank(user.getUserRank());
+        userDTO.setStatusMessage(user.getStatusMessage());
+        userDTO.setStudentInformation(user.getStudentInformation());
+        userDTO.setSuid(user.getSuid());
+        userDTO.setAvatarUrl(user.getAvatarUrl());
        
-        userDTO.setDob(user.getDob());
+        
         return userDTO;
     }
     
@@ -68,7 +74,7 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public UserDTO createUser(UserCreateDTO userCreateDTO) {
+    public UserDTO createUser(UserDTO userCreateDTO) {
         // Kiểm tra username, email và số điện thoại đã tồn tại chưa
         if (userRepository.existsByUsername(userCreateDTO.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
@@ -83,19 +89,33 @@ public class UserServiceImpl implements UserService {
         }
         
         User user = new User();
+           
+        if (userCreateDTO.getUserRank() == null) {
+                user.setUserRank("normal");
+        }
+        if(userCreateDTO.getSuid() == null)
+        {
+            String SUID = UUID.randomUUID().toString();
+            user.setSuid(SUID);
+        }
+        
         user.setUsername(userCreateDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
         user.setEmail(userCreateDTO.getEmail());
         user.setPhoneNumber(userCreateDTO.getPhoneNumber());
-        user.setUserRank(userCreateDTO.getUserRank());
-        user.setDob(userCreateDTO.getDob());
         
+        user.setStatusMessage(userCreateDTO.getStatusMessage());
+        user.setStudentInformation(userCreateDTO.getStudentInformation());
+        
+        user.setAvatarUrl(userCreateDTO.getAvatarUrl());
+        
+     
         User savedUser = userRepository.save(user);
         return convertToDTO(savedUser);
     }
     
     @Override
-    public UserDTO updateUser(Long id, UserUpdateDTO userUpdateDTO) {
+    public UserDTO updateUser(Long id, UserDTO userUpdateDTO) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
         
@@ -135,9 +155,7 @@ public class UserServiceImpl implements UserService {
             user.setUserRank(userUpdateDTO.getUserRank());
         }
         
-        if (userUpdateDTO.getDob() != null) {
-            user.setDob(userUpdateDTO.getDob());
-        }
+    
         
         User updatedUser = userRepository.save(user);
         return convertToDTO(updatedUser);
