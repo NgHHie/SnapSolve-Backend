@@ -6,10 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.snapsolve.dto.PostDTO;
+import com.example.snapsolve.exception.ResourceNotFoundException;
 import com.example.snapsolve.models.Post;
 import com.example.snapsolve.services.PostService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/post")
@@ -81,5 +84,39 @@ public class PostController {
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         postService.deletePost(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * API để thích một bài viết
+     */
+    @PostMapping("/{id}/like")
+    public ResponseEntity<Post> likePost(@PathVariable("id") Long postId, @RequestParam Long userId) {
+        try {
+            Post updatedPost = postService.likePost(postId, userId);
+            return new ResponseEntity<>(updatedPost, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return new ResponseEntity(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    /**
+     * API để bỏ thích một bài viết
+     */
+    @PostMapping("/{id}/unlike")
+    public ResponseEntity<Post> unlikePost(@PathVariable("id") Long postId, @RequestParam Long userId) {
+        try {
+            Post updatedPost = postService.unlikePost(postId, userId);
+            return new ResponseEntity<>(updatedPost, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return new ResponseEntity(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
