@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.snapsolve.dto.mapper.UserMapper;
 import com.example.snapsolve.dto.user.PasswordChangeDTO;
 
 import com.example.snapsolve.dto.user.UserDTO;
@@ -26,51 +27,34 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
+      @Autowired
+    private UserMapper userMapper;
     
-    // Chuyển đổi User sang UserDTO
-    private UserDTO convertToDTO(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setUsername(user.getUsername());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setPhoneNumber(user.getPhoneNumber());
-        userDTO.setUserRank(user.getUserRank());
-        userDTO.setStatusMessage(user.getStatusMessage());
-        userDTO.setStudentInformation(user.getStudentInformation());
-        userDTO.setSuid(user.getSuid());
-        userDTO.setAvatarUrl(user.getAvatarUrl());
-       
-        
-        return userDTO;
-    }
+   
     
-    @Override
+   @Override
     public List<UserDTO> findAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        return userMapper.convertToDTOList(userRepository.findAll());
     }
     
     @Override
     public UserDTO findUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
-        return convertToDTO(user);
+        return userMapper.convertToDTO(user);
     }
-    
-    @Override
+
+      @Override
     public UserDTO findUserByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
-        return convertToDTO(user);
+        return userMapper.convertToDTO(user);
     }
-    
-    @Override
+   @Override
     public UserDTO findUserByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
-        return convertToDTO(user);
+        return userMapper.convertToDTO(user);
     }
     
     @Override
@@ -88,30 +72,25 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Phone number already exists");
         }
         
-        User user = new User();
-           
-        if (userCreateDTO.getUserRank() == null) {
-                user.setUserRank("normal");
+        User user = userMapper.convertToEntity(userCreateDTO);
+        
+        // Xử lý các logic đặc biệt
+        if (user.getUserRank() == null) {
+            user.setUserRank("normal");
         }
-        if(userCreateDTO.getSuid() == null)
-        {
-            String SUID = UUID.randomUUID().toString();
+        
+        if (user.getSuid() == null) {
+            String SUID = java.util.UUID.randomUUID().toString();
             user.setSuid(SUID);
         }
         
-        user.setUsername(userCreateDTO.getUsername());
-        user.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
-        user.setEmail(userCreateDTO.getEmail());
-        user.setPhoneNumber(userCreateDTO.getPhoneNumber());
+        // Mã hóa mật khẩu
+        if (userCreateDTO.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
+        }
         
-        user.setStatusMessage(userCreateDTO.getStatusMessage());
-        user.setStudentInformation(userCreateDTO.getStudentInformation());
-        
-        user.setAvatarUrl(userCreateDTO.getAvatarUrl());
-        
-     
         User savedUser = userRepository.save(user);
-        return convertToDTO(savedUser);
+        return userMapper.convertToDTO(savedUser);
     }
     
     @Override
@@ -138,7 +117,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Phone number already exists");
         }
         
-        // Cập nhật thông tin người dùng
+        // Cập nhật thông tin người dùng từ DTO
         if (userUpdateDTO.getUsername() != null) {
             user.setUsername(userUpdateDTO.getUsername());
         }
@@ -155,10 +134,30 @@ public class UserServiceImpl implements UserService {
             user.setUserRank(userUpdateDTO.getUserRank());
         }
         
-    
+        if (userUpdateDTO.getStatusMessage() != null) {
+            user.setStatusMessage(userUpdateDTO.getStatusMessage());
+        }
+        
+        if (userUpdateDTO.getStudentInformation() != null) {
+            user.setStudentInformation(userUpdateDTO.getStudentInformation());
+        }
+        
+        // Không cập nhật avatarUrl ở đây, sẽ có phương thức riêng
         
         User updatedUser = userRepository.save(user);
-        return convertToDTO(updatedUser);
+        return userMapper.convertToDTO(updatedUser);
+    }
+    
+    @Override
+    public UserDTO updateUserAvatar(Long id, String avatarUrl) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        
+        // Lưu avatarUrl trong database (đường dẫn tương đối)
+        user.setAvatarUrl(avatarUrl);
+        User updatedUser = userRepository.save(user);
+        
+        return userMapper.convertToDTO(updatedUser);
     }
     
     @Override
@@ -199,4 +198,5 @@ public class UserServiceImpl implements UserService {
     public boolean isUsernameExists(String username) {
         return userRepository.existsByUsername(username);
     }
+  
 }

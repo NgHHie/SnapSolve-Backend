@@ -23,4 +23,5 @@ public interface UserService {
     boolean isEmailExists(String email);
     boolean isPhoneNumberExists(String phoneNumber);
     boolean isUsernameExists(String username);
+    UserDTO updateUserAvatar(Long id, String avatarUrl);
 }
