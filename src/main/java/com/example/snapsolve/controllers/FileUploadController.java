@@ -52,11 +52,11 @@ public class FileUploadController {
             @PathVariable("id") Long userId,
             @RequestParam("avatar") MultipartFile file) {
         try {
-            // Lưu file và lấy tên file đã lưu
+            
             String fileName = fileStorageService.storeFile(file);
             String fileUrl = "/images/" + fileName;
             
-            // Cập nhật URL ảnh đại diện cho user (chỉ lưu đường dẫn tương đối)
+           
             UserDTO updatedUser = userService.updateUserAvatar(userId, fileUrl);
             
             return ResponseEntity.ok(updatedUser);

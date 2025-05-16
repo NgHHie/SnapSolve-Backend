@@ -48,9 +48,8 @@ public class FileStorageServiceImpl implements FileStorageService {
             fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
         }
         String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
-        
-        // Copy file to the target location (Replacing existing file with the same name)
-        Path targetLocation = this.fileStorageLocation.resolve(uniqueFileName);
+      
+        Path targetLocation = this.fileStorageLocation.resolve(uniqueFileName); ///noi duong dan
         Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
         
         System.out.println("Stored file: " + uniqueFileName + " at " + targetLocation);
