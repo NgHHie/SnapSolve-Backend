@@ -16,4 +16,5 @@ public interface PostService {
     void deletePost(Long id);
     Post likePost(Long postId, Long userId);
     Post unlikePost(Long postId, Long userId);
+    List<Post> getLikedPostsByUserId(Long userId);
 }

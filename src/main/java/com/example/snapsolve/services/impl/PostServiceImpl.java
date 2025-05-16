@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -207,5 +208,19 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(Long id) {
         postRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Post> getLikedPostsByUserId(Long userId) {
+        // Lấy tất cả các React của người dùng có type là "like"
+        List<React> userLikes = reactRepository.findByUserIdAndType(userId, "like");
+    
+        // Chuyển đổi danh sách React thành danh sách Post
+        List<Post> likedPosts = new ArrayList<>();
+        for (React react : userLikes) {
+            likedPosts.add(react.getPost());
+        }
+    
+        return likedPosts;
     }
 }

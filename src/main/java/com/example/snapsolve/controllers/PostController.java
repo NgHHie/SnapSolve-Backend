@@ -86,6 +86,12 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/liked/{userId}")
+    public ResponseEntity<List<Post>> getLikedPostsByUserId(@PathVariable Long userId) {
+        List<Post> likedPosts = postService.getLikedPostsByUserId(userId);
+        return new ResponseEntity<>(likedPosts, HttpStatus.OK);
+    }
+
     /**
      * API để thích một bài viết
      */
