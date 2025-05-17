@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,13 @@ public class Post {
 
     private String content;
     private String image;
+
+    // Thêm trường để lưu các ảnh khác
+    @ElementCollection
+    @CollectionTable(name = "post_images", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "image_url")
+    private List<String> additionalImages = new ArrayList<>();
+
     private LocalDate createDate;
     private String title;
 
@@ -41,4 +49,16 @@ public class Post {
     )
     @JsonIgnoreProperties("posts")
     private List<Topic> topics;
+
+    @Transient
+    public List<String> getAllImages() {
+        List<String> allImages = new ArrayList<>();
+        if (image != null && !image.isEmpty()) {
+            allImages.add(image);
+        }
+        if (additionalImages != null) {
+            allImages.addAll(additionalImages);
+        }
+        return allImages;
+    }
 }

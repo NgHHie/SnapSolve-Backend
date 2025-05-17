@@ -75,8 +75,18 @@ public class PostServiceImpl implements PostService {
         Post post = new Post();
         post.setTitle(postDTO.getTitle());
         post.setContent(postDTO.getContent());
-        post.setImage(postDTO.getImage());
         post.setCreateDate(LocalDate.now());
+        
+        // Xử lý nhiều ảnh
+        if (postDTO.getImages() != null && !postDTO.getImages().isEmpty()) {
+            // Ảnh đầu tiên làm thumbnail
+            post.setImage(postDTO.getImages().get(0));
+            
+            // Các ảnh còn lại vào additionalImages
+            if (postDTO.getImages().size() > 1) {
+                post.setAdditionalImages(new ArrayList<>(postDTO.getImages().subList(1, postDTO.getImages().size())));
+            }
+        }
         
         // Thiết lập user
         if (postDTO.getUserId() != null) {
@@ -112,8 +122,17 @@ public class PostServiceImpl implements PostService {
                 existingPost.setContent(postDTO.getContent());
             }
             
-            if (postDTO.getImage() != null) {
-                existingPost.setImage(postDTO.getImage());
+            // Cập nhật ảnh
+            if (postDTO.getImages() != null && !postDTO.getImages().isEmpty()) {
+                // Ảnh đầu tiên làm thumbnail
+                existingPost.setImage(postDTO.getImages().get(0));
+                
+                // Các ảnh còn lại vào additionalImages
+                if (postDTO.getImages().size() > 1) {
+                    existingPost.setAdditionalImages(new ArrayList<>(postDTO.getImages().subList(1, postDTO.getImages().size())));
+                } else {
+                    existingPost.setAdditionalImages(new ArrayList<>());
+                }
             }
             
             // Cập nhật topics nếu có

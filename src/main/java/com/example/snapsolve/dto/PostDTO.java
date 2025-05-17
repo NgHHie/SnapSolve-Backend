@@ -7,7 +7,7 @@ import java.util.List;
 public class PostDTO {
     private String title;
     private String content;
-    private String image;
+    private List<String> images;
     private Long userId;
     private List<Long> topicIds;
 }
