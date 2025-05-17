@@ -12,4 +12,8 @@ public class Assignment {
 
     private String question;
     private String answer;
+
+    @Column(columnDefinition = "LONGTEXT")
+    @Lob
+    private String vector;
 }
