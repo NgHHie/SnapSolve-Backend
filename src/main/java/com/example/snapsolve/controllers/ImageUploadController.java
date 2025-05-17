@@ -6,6 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.snapsolve.dto.image.AnalysisResult;
+import com.example.snapsolve.models.Assignment;
+import com.example.snapsolve.services.AssignmentService;
 import com.example.snapsolve.services.ImageAnalysisService;
 
 import java.io.File;
@@ -16,12 +19,19 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/images")
 public class ImageUploadController {
+
+    @Autowired
+    private ImageAnalysisService imageAnalysisService;
+
+    @Autowired
+    private AssignmentService assignmentService;
 
     @Value("${file.upload-dir:uploads/images}")
     private String uploadDir;
@@ -72,41 +82,16 @@ public class ImageUploadController {
             response.put("contentType", file.getContentType());
             response.put("description", description);
 
+            AnalysisResult result = imageAnalysisService.analyzeImageFile(new File(uploadDir, imageId));
+            List<Assignment> assignments = assignmentService.getAssignments(result.getAssignments());
+
+            response.put("assignments", assignments);
             return ResponseEntity.ok(response);
 
         } catch (IOException e) {
             e.printStackTrace();
             response.put("success", false);
             response.put("message", "Failed to upload image: " + e.getMessage());
-            return ResponseEntity.internalServerError().body(response);
-        }
-    }
-
-    @Autowired
-    private ImageAnalysisService imageAnalysisService;
-
-    @GetMapping("/analyze/{imageId}")
-    public ResponseEntity<Map<String, Object>> analyzeImage(@PathVariable String imageId) {
-        Map<String, Object> response = new HashMap<>();
-        
-        try {
-            ImageAnalysisService.AnalysisResult result = imageAnalysisService.analyzeImage(imageId);
-            
-            if (result.isSuccess()) {
-                response.put("success", true);
-                response.put("question", result.getQuestion());
-                response.put("answer", result.getAnswer());
-                return ResponseEntity.ok(response);
-            } else {
-                response.put("success", false);
-                response.put("message", result.getErrorMessage());
-                return ResponseEntity.badRequest().body(response);
-            }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.put("success", false);
-            response.put("message", "Failed to analyze image: " + e.getMessage());
             return ResponseEntity.internalServerError().body(response);
         }
     }
