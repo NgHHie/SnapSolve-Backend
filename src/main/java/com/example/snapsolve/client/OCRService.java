@@ -43,14 +43,23 @@ public class OCRService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.MULTIPART_FORM_DATA);
             
+            // Debug info
+            System.out.println("Calling OCR API at: " + url);
+            System.out.println("File exists: " + imageFile.exists());
+            System.out.println("File size: " + imageFile.length());
+            
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             body.add("image", new FileSystemResource(imageFile));
             
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
             ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
             
+            System.out.println("Response status: " + response.getStatusCode());
+            
             return objectMapper.readValue(response.getBody(), Map.class);
         } catch (Exception e) {
+            System.err.println("Error extracting text from image: " + e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException("Failed to extract text from image: " + e.getMessage(), e);
         }
     }

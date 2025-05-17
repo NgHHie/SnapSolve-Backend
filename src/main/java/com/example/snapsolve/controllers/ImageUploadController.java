@@ -68,7 +68,7 @@ public class ImageUploadController {
             // Save the file
             Path filePath = Paths.get(uploadDir, fileName);
             Files.write(filePath, file.getBytes());
-
+            File savedFile = filePath.toFile();
             // Generate relative URL for accessing the image
             String imageUrl = "/images/" + fileName;
 
@@ -82,10 +82,18 @@ public class ImageUploadController {
             response.put("contentType", file.getContentType());
             response.put("description", description);
 
-            AnalysisResult result = imageAnalysisService.analyzeImageFile(new File(uploadDir, imageId));
-            List<Assignment> assignments = assignmentService.getAssignments(result.getAssignments());
+            System.out.println(savedFile.getPath());
+            AnalysisResult result = imageAnalysisService.analyzeImageFile(savedFile);
 
-            response.put("assignments", assignments);
+            // Add null check before calling getAssignments
+            if (result.getAssignments() != null) {
+                List<Assignment> assignments = assignmentService.getAssignments(result.getAssignments());
+                response.put("assignments", assignments);
+            } else {
+                // Handle the case where no similar questions were found
+                response.put("assignments", List.of());
+            }
+
             return ResponseEntity.ok(response);
 
         } catch (IOException e) {

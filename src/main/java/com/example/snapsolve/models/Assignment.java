@@ -10,7 +10,12 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "LONGTEXT")
+    @Lob
     private String question;
+    
+    @Column(columnDefinition = "LONGTEXT")
+    @Lob
     private String answer;
 
     @Column(columnDefinition = "LONGTEXT")
