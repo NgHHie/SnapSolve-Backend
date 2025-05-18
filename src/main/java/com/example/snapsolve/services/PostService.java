@@ -1,6 +1,6 @@
 package com.example.snapsolve.services;
 
-import com.example.snapsolve.dto.PostDTO;
+import com.example.snapsolve.dto.community.PostDTO;
 import com.example.snapsolve.models.Post;
 import java.util.List;
 

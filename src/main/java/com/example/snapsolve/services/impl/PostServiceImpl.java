@@ -3,7 +3,7 @@ package com.example.snapsolve.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.snapsolve.dto.PostDTO;
+import com.example.snapsolve.dto.community.PostDTO;
 import com.example.snapsolve.exception.ResourceNotFoundException;
 import com.example.snapsolve.models.Post;
 import com.example.snapsolve.models.React;

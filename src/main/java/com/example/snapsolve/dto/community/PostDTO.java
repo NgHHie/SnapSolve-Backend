@@ -1,4 +1,4 @@
-package com.example.snapsolve.dto;
+package com.example.snapsolve.dto.community;
 
 import lombok.Data;
 import java.util.List;
