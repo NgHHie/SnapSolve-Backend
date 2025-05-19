@@ -11,7 +11,9 @@ import com.example.snapsolve.dto.user.UserDTO;
 import com.example.snapsolve.services.UserService;
 import com.example.snapsolve.services.FileStorageService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -40,6 +42,31 @@ public class FileUploadController {
             response.put("fullUrl", serverBaseUrl + fileUrl);
             
             return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
+    @PostMapping("/files/upload-multiple")
+    public ResponseEntity<?> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+        try {
+            List<Map<String, String>> responseList = new ArrayList<>();
+            
+            for (MultipartFile file : files) {
+                String fileName = fileStorageService.storeFile(file);
+                String fileUrl = "/images/" + fileName;
+                
+                Map<String, String> fileInfo = new HashMap<>();
+                fileInfo.put("fileName", fileName);
+                fileInfo.put("fileUrl", fileUrl);
+                fileInfo.put("fullUrl", serverBaseUrl + fileUrl);
+                
+                responseList.add(fileInfo);
+            }
+            
+            return ResponseEntity.ok(responseList);
         } catch (Exception e) {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", e.getMessage());
