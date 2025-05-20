@@ -12,7 +12,7 @@ import java.util.Enumeration;
 @Configuration
 public class ServerConfig {
 
-    @Value("${server.port:9999}")
+    @Value("${server.port:8080}")
     private String serverPort;
 
     @Bean(name = "serverBaseUrl")
