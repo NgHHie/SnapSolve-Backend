@@ -29,7 +29,4 @@ public class User {
     @JsonIgnoreProperties("user")
     private List<Search> searchList;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("user")
-    private List<Note> noteList;
 }
