@@ -31,13 +31,13 @@ public class UserMapper {
         userDTO.setStudentInformation(user.getStudentInformation());
         userDTO.setSuid(user.getSuid());
         
-        // Xử lý avatarUrl - thêm URL đầy đủ cho client
+        
         if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
-            // Nếu avatarUrl đã có schema http/https, không cần thêm server base URL
+        
             if (user.getAvatarUrl().startsWith("http")) {
                 userDTO.setAvatarUrl(user.getAvatarUrl());
             } else {
-                // Nếu avatarUrl là đường dẫn tương đối, thêm server base URL
+        
                 userDTO.setAvatarUrl(serverBaseUrl + user.getAvatarUrl());
             }
         } else {
@@ -60,9 +60,9 @@ public class UserMapper {
         user.setStudentInformation(userDTO.getStudentInformation());
         user.setSuid(userDTO.getSuid());
         
-        // Xử lý avatarUrl - chỉ lưu đường dẫn tương đối vào database
+        
         if (userDTO.getAvatarUrl() != null && !userDTO.getAvatarUrl().isEmpty()) {
-            // Nếu URL có chứa server base URL, loại bỏ phần đó
+            
             if (userDTO.getAvatarUrl().startsWith(serverBaseUrl)) {
                 user.setAvatarUrl(userDTO.getAvatarUrl().substring(serverBaseUrl.length()));
             } else {
@@ -75,9 +75,7 @@ public class UserMapper {
         return user;
     }
 
-    /**
-     * Chuyển đổi danh sách User sang UserDTO
-     */
+  
     public java.util.List<UserDTO> convertToDTOList(java.util.List<User> users) {
         if (users == null) return java.util.Collections.emptyList();
         return users.stream()

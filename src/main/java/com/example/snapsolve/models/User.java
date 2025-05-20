@@ -29,4 +29,8 @@ public class User {
     @JsonIgnoreProperties("user")
     private List<Search> searchList;
 
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Payment> payments;
 }
