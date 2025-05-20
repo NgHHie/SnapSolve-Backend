@@ -1,5 +1,6 @@
 package com.example.snapsolve.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,8 +26,11 @@ public class User {
 
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
     private List<Search> searchList;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Note> noteList;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Payment> payments;
 }
