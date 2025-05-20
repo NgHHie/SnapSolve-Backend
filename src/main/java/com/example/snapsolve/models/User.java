@@ -29,4 +29,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Note> noteList;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Payment> payments;
 }
