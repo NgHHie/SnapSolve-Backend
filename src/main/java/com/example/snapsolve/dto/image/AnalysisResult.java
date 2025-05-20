@@ -13,4 +13,5 @@ public class AnalysisResult {
     private boolean success;
     private List<SimilarQuestion> assignments;
     private String errorMessage;
+    private String question;
 }

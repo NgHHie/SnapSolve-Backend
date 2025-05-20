@@ -47,4 +47,29 @@ public class AssignmentServiceImpl implements AssignmentService{
         
         return orderedAssignments;
     }
+
+    @Override
+    public List<Assignment> getAssignmentsByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return List.of(); // Return empty list instead of NPE
+        }
+        
+        // Fetch all matching assignments
+        List<Assignment> assignments = assignmentRepository.findByIdIn(ids);
+        
+        // Create a map for quick lookup by ID
+        Map<Long, Assignment> assignmentMap = assignments.stream()
+                .collect(Collectors.toMap(Assignment::getId, assignment -> assignment));
+        
+        // Create a new list that preserves the original order from similarQuestions
+        List<Assignment> orderedAssignments = new ArrayList<>();
+        for (Long id : ids) {
+            Assignment assignment = assignmentMap.get(id);
+            if (assignment != null) {
+                orderedAssignments.add(assignment);
+            }
+        }
+        
+        return orderedAssignments;
+    }
 }

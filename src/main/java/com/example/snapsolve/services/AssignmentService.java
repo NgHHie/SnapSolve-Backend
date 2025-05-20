@@ -10,4 +10,5 @@ import com.example.snapsolve.models.Assignment;
 @Service
 public interface AssignmentService {
     public List<Assignment> getAssignments(List<SimilarQuestion> questions);
+    public List<Assignment> getAssignmentsByIds(List<Long> ids);
 } 

@@ -34,7 +34,7 @@ public class ImageAnalysisServiceImpl implements ImageAnalysisService {
             Map<String, Object> extractionResult = ocrService.extractTextFromImage(imageFile);
             
             if (extractionResult == null) {
-                return new AnalysisResult(false, null, "Extraction result is null");
+                return new AnalysisResult(false, null, "Extraction result is null", null);
             }
             
             if ((Boolean) extractionResult.getOrDefault("success", false)) {
@@ -83,14 +83,14 @@ public class ImageAnalysisServiceImpl implements ImageAnalysisService {
                     }
                 }
                 
-                return new AnalysisResult(true, questions, "success");
+                return new AnalysisResult(true, questions, "success", (String) extractionResult.get("question"));
             } else {
                 String message = (String) extractionResult.getOrDefault("message", "Unknown error");
-                return new AnalysisResult(false, null, "Failed to extract text from image: " + message);
+                return new AnalysisResult(false, null, "Failed to extract text from image: " + message, null);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new AnalysisResult(false, null, "Error analyzing image: " + e.getMessage());
+            return new AnalysisResult(false, null, "Error analyzing image: " + e.getMessage(), null);
         }
     }
 
