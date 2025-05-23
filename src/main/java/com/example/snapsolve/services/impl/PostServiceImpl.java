@@ -75,7 +75,7 @@ public class PostServiceImpl implements PostService {
         Post post = new Post();
         post.setTitle(postDTO.getTitle());
         post.setContent(postDTO.getContent());
-        post.setCreateDate(LocalDate.now());
+        post.setCreateDate(LocalDate.now().toString());
         
         // Xử lý nhiều ảnh
         if (postDTO.getImages() != null && !postDTO.getImages().isEmpty()) {

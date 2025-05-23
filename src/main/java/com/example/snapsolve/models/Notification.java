@@ -5,6 +5,8 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Data
 public class Notification {
@@ -14,6 +16,7 @@ public class Notification {
 
     private String content;
     private String title;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate notiDate;
     @Column(name = "is_read", nullable = false)
     private boolean isRead = false;

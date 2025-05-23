@@ -24,7 +24,7 @@ public class Post {
     @Column(name = "image_url")
     private List<String> additionalImages = new ArrayList<>();
 
-    private LocalDate createDate;
+    private String createDate;
     private String title;
 
     @ManyToOne

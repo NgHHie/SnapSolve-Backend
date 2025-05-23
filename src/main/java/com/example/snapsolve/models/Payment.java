@@ -6,7 +6,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -24,9 +28,11 @@ public class Payment {
     
     
     private String subscriptionType;   
-      private Integer durationMonths; 
-    private LocalDateTime paymentDate;     
-    private LocalDateTime expiryDate;      
+    private Integer durationMonths; 
+    
+    private String paymentDate;     
+
+    private String expiryDate;      
     
     
     @ManyToOne

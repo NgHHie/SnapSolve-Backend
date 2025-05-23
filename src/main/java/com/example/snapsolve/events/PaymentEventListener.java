@@ -48,7 +48,7 @@ public class PaymentEventListener {
             }
             
             if (payment.getExpiryDate() != null) {
-                content.append("Hết hạn vào: ").append(payment.getExpiryDate().toLocalDate()).append(". ");
+                content.append("Hết hạn vào: ").append(payment.getExpiryDate()).append(". ");
             }
             
             content.append("Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi!");
