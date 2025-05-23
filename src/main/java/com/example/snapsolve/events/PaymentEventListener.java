@@ -48,6 +48,7 @@ public class PaymentEventListener {
             }
             
             if (payment.getExpiryDate() != null) {
+                
                 content.append("Hết hạn vào: ").append(payment.getExpiryDate()).append(". ");
             }
             
