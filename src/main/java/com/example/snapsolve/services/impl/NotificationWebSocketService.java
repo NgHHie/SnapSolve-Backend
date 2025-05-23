@@ -13,13 +13,11 @@ public class NotificationWebSocketService {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    /**
-     * Gửi thông báo đến một user cụ thể qua WebSocket
-     */
+   
     public void sendNotificationToUser(Long userId, Notification notification) {
         NotificationDTO notificationDTO = convertToDTO(notification);
         
-        // Gửi đến user cụ thể
+        
         messagingTemplate.convertAndSendToUser(
             userId.toString(),
             "/queue/notifications",
@@ -27,11 +25,10 @@ public class NotificationWebSocketService {
         );
         
         System.out.println("Sent notification to user " + userId + ": " + notification.getTitle());
+        System.out.println("Notification content: " + notificationDTO.toString());
     }
 
-    /**
-     * Gửi thông báo đến tất cả user (broadcast)
-     */
+  
     public void broadcastNotification(Notification notification) {
         NotificationDTO notificationDTO = convertToDTO(notification);
         
@@ -40,9 +37,7 @@ public class NotificationWebSocketService {
         System.out.println("Broadcasted notification: " + notification.getTitle());
     }
 
-    /**
-     * Gửi update số lượng thông báo chưa đọc
-     */
+  
     public void sendUnreadCountUpdate(Long userId, long unreadCount) {
         // Tạo object chứa thông tin unread count
         UnreadCountDTO unreadCountDTO = new UnreadCountDTO();

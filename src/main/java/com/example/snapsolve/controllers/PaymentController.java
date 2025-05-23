@@ -27,7 +27,7 @@ public class PaymentController {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
     
-    // Create a new payment
+    
     @PostMapping
     public ResponseEntity<?> createPayment(@RequestBody Payment payment, @RequestParam Long userId) {
         Optional<User> userOpt = userRepository.findById(userId);
@@ -37,21 +37,21 @@ public class PaymentController {
         
         payment.setUser(userOpt.get());
         
-        // Set payment date if not provided
+        
         if (payment.getPaymentDate() == null) {
             payment.setPaymentDate(LocalDateTime.now());
         }
         
-        // Save payment
+        
         Payment savedPayment = paymentRepository.save(payment);
         
-        // Publish event để tạo notification
+        
         eventPublisher.publishEvent(new PaymentCreatedEvent(this, savedPayment));
         
         return ResponseEntity.ok(savedPayment);
     }
     
-    // Get all payments for a user
+    
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Payment>> getUserPayments(@PathVariable Long userId) {
         List<Payment> payments = paymentRepository.findByUserId(userId);

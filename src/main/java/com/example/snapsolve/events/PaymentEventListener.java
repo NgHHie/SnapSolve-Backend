@@ -17,7 +17,7 @@ public class PaymentEventListener {
     public void handlePaymentCreated(PaymentCreatedEvent event) {
         Payment payment = event.getPayment();
         
-        // Tạo nội dung thông báo dựa trên thông tin payment
+        
         String title = "Thanh toán thành công";
         String content = createNotificationContent(payment);
         
@@ -28,6 +28,9 @@ public class PaymentEventListener {
                           " - Payment ID: " + payment.getId());
     }
 
+
+
+    //ham tao noi dung cho thong bao 
     private String createNotificationContent(Payment payment) {
         StringBuilder content = new StringBuilder();
         

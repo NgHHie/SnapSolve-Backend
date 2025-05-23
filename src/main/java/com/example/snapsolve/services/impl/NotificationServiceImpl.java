@@ -29,13 +29,13 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setNotiDate(LocalDate.now());
         notification.setUser(user);
         
-        // Lưu notification vào database
+        
         Notification savedNotification = notificationRepository.save(notification);
         
-        // Gửi thông báo qua WebSocket đến user
+        
         webSocketService.sendNotificationToUser(user.getId(), savedNotification);
         
-        // Gửi update số lượng thông báo chưa đọc
+        
         long unreadCount = getUnreadNotificationCount(user.getId());
         webSocketService.sendUnreadCountUpdate(user.getId(), unreadCount);
         
