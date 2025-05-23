@@ -15,4 +15,9 @@ public class Notification {
     private String content;
     private String title;
     private LocalDate notiDate;
+    @Column(name = "is_read", nullable = false)
+    private boolean isRead = false;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 }
