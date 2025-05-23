@@ -15,4 +15,7 @@ public class Notification {
     private String content;
     private String title;
     private LocalDate notiDate;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 }
