@@ -23,9 +23,11 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/images/**").permitAll() // Cho phép truy cập công khai vào thư mục images
+                .requestMatchers("/images/**").permitAll() 
                 .requestMatchers("/api/**").permitAll()
-                .anyRequest().authenticated()
+                 .requestMatchers("/ws/**").permitAll()
+                  .anyRequest().permitAll()
+                
             )
             .httpBasic(withDefaults());
         

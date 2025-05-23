@@ -1,5 +1,6 @@
 package com.example.snapsolve.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -31,6 +32,8 @@ public class User {
 
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Payment> payments;
+   
 }
