@@ -18,7 +18,7 @@ public class PaymentEventListener {
         Payment payment = event.getPayment();
         
         
-        String title = "Thanh toán thành công";
+        String title = "Payment Successful";
         String content = createNotificationContent(payment);
         
         // Tạo thông báo cho user
@@ -31,41 +31,37 @@ public class PaymentEventListener {
 
 
     //ham tao noi dung cho thong bao 
-    private String createNotificationContent(Payment payment) {
-        StringBuilder content = new StringBuilder();
-        
-        if ("COMPLETED".equalsIgnoreCase(payment.getPaymentStatus()) || 
-            "SUCCESS".equalsIgnoreCase(payment.getPaymentStatus())) {
-            
-            content.append("Chúc mừng bạn đã trở thành Premium User! ");
-            
-            if (payment.getSubscriptionType() != null) {
-                content.append("Gói đăng ký: ").append(payment.getSubscriptionType()).append(". ");
+        private String createNotificationContent(Payment payment) {
+            StringBuilder content = new StringBuilder();
+
+            if ("COMPLETED".equalsIgnoreCase(payment.getPaymentStatus()) || 
+                "SUCCESS".equalsIgnoreCase(payment.getPaymentStatus())) {
+
+                content.append("Congratulations! You are now a Premium User! ");
+
+                if (payment.getSubscriptionType() != null) {
+                    content.append("Subscription plan: ").append(payment.getSubscriptionType()).append(". ");
+                }
+
+                if (payment.getDurationMonths() != null) {
+                    content.append("Duration: ").append(payment.getDurationMonths()).append(" month(s). ");
+                }
+
+                content.append("Thank you for trusting and using our service!");
+
+            } else if ("PENDING".equalsIgnoreCase(payment.getPaymentStatus())) {
+                content.append("Your payment is currently being processed. ")
+                    .append("We will notify you once the transaction is complete.");
+                    
+            } else if ("FAILED".equalsIgnoreCase(payment.getPaymentStatus())) {
+                content.append("Payment failed. ")
+                    .append("Please try again or contact customer support.");
+            } else {
+                content.append("Thank you for your payment. ")
+                    .append("Status: ").append(payment.getPaymentStatus());
             }
-            
-            if (payment.getDurationMonths() != null) {
-                content.append("Thời hạn: ").append(payment.getDurationMonths()).append(" tháng. ");
-            }
-            
-            if (payment.getExpiryDate() != null) {
-                
-                content.append("Hết hạn vào: ").append(payment.getExpiryDate()).append(". ");
-            }
-            
-            content.append("Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi!");
-            
-        } else if ("PENDING".equalsIgnoreCase(payment.getPaymentStatus())) {
-            content.append("Thanh toán của bạn đang được xử lý. ")
-                   .append("Chúng tôi sẽ thông báo khi giao dịch hoàn tất.");
-                   
-        } else if ("FAILED".equalsIgnoreCase(payment.getPaymentStatus())) {
-            content.append("Thanh toán không thành công. ")
-                   .append("Vui lòng thử lại hoặc liên hệ hỗ trợ khách hàng.");
-        } else {
-            content.append("Cảm ơn bạn đã thực hiện thanh toán. ")
-                   .append("Trạng thái: ").append(payment.getPaymentStatus());
+
+            return content.toString();
         }
-        
-        return content.toString();
-    }
+
 }
